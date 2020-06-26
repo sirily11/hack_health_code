@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health_qr_code_generator/model/DatabaseProvider.dart';
+import 'package:health_qr_code_generator/model/HealthCodeProvider.dart';
 import 'package:health_qr_code_generator/model/HomeProvider.dart';
-import 'package:health_qr_code_generator/model/pages/home/HomePage.dart';
+import 'package:health_qr_code_generator/pages/home/HomePage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -15,6 +17,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => HomeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HealthCodeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DatabaseProvider(),
         ),
       ],
       child: MaterialApp(
