@@ -50,13 +50,23 @@ void getContinueHealCodeList(List<HealthCode> healthCodeList) {
 
 List<HealthCode> getLastContinueDays(List<HealthCode> healthCodeList) {
   List<HealthCode> newList = [];
-  for (var healthCode in healthCodeList) {
+  for (int i = 0; i < healthCodeList.length; i++) {
+    var healthCode = healthCodeList[i];
     if (!healthCode.isContinued) {
       newList.clear();
       continue;
+    }
+    if (newList.isEmpty && i > 0) {
+      var yesterdayHealthCode = healthCodeList[i - 1];
+      if (!hasExpired(convert(healthCode.lastReportTime),
+          convert(yesterdayHealthCode.outTime))) {
+        newList.add(yesterdayHealthCode);
+      }
     }
     newList.add(healthCode);
   }
 
   return newList;
 }
+
+

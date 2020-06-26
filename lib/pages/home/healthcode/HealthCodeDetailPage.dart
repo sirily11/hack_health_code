@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_qr_code_generator/model/DatabaseProvider.dart';
 import 'package:health_qr_code_generator/model/HealthCode.dart';
+import 'package:health_qr_code_generator/model/HomeProvider.dart';
 import 'package:health_qr_code_generator/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -19,6 +20,7 @@ class HealthCodeDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DatabaseProvider databaseProvider = Provider.of(context);
+    HomeProvider homeProvider = Provider.of(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -63,6 +65,13 @@ class HealthCodeDetailPage extends StatelessWidget {
                       onPressed: () async {
                         try {
                           await databaseProvider.add(healthCode);
+                          homeProvider.sendNotification(
+                            DateTime.now().add(
+                              Duration(seconds: 10),
+                            ),
+                            title: "Test",
+                            message: "Test Test",
+                          );
                           Navigator.pop(context);
                         } catch (err) {
                           showDialog(

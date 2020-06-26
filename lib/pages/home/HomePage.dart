@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:health_qr_code_generator/model/DatabaseProvider.dart';
 import 'package:health_qr_code_generator/model/HealthCode.dart';
 import 'package:health_qr_code_generator/model/HealthCodeProvider.dart';
+import 'package:health_qr_code_generator/pages/home/NotificationWidget.dart';
 import 'package:health_qr_code_generator/pages/home/healthcode/HealthCodeDetailPage.dart';
 import 'package:health_qr_code_generator/pages/home/healthcode/HealthCodeRow.dart';
 import 'package:health_qr_code_generator/utils/utils.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   Duration expireDuration;
   DateTime currentTime = DateTime.now();
   HealthCode latestHealthCode;
+  List<HealthCode> continueHealthCode = [];
 
   @override
   void initState() {
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context, scrollController) => HealthCodeDetailPage(
-        healthCode: testHealthCode2,
+        healthCode: testHealthCode,
       ),
     );
   }
@@ -79,16 +81,9 @@ class _HomePageState extends State<HomePage> {
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                LinearProgressIndicator(
-                  value: expireDuration != null
-                      ? getDurationProgress(expireDuration)
-                      : 0,
-                ),
-                Text(
-                  "Expire in ${expireDuration != null ? durationToString(expireDuration) : "None"}",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
+                NotificationWidget(
+                  continueList: continueHealthCode,
+                  expireDuration: expireDuration,
                 ),
                 StreamBuilder(
                   stream: databaseProvider.stream,
@@ -116,9 +111,12 @@ class _HomePageState extends State<HomePage> {
                       latestHealthCode = healthCodeList.last;
                     } else {
                       latestHealthCode = null;
+                      return Container();
                     }
 
                     getContinueHealCodeList(healthCodeList);
+                    this.continueHealthCode =
+                        getLastContinueDays(healthCodeList);
 
                     return ListView.separated(
                         shrinkWrap: true,
