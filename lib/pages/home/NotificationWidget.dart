@@ -13,8 +13,12 @@ class NotificationWidget extends StatelessWidget {
   });
 
   int getDuration(DateTime one, DateTime two) {
-    var diff = one.difference(two);
-    return diff.inDays;
+    if (one != null && two != null) {
+      var diff = one.difference(two);
+      return diff.inDays;
+    } else {
+      return 0;
+    }
   }
 
   @override
@@ -35,10 +39,10 @@ class NotificationWidget extends StatelessWidget {
             title: Text(
                 "Expire in ${expireDuration != null ? durationToString(expireDuration) : null}"),
             subtitle: Text(
-              "已经连续打卡: ${getDuration(
-                convert(continueList.first.lastReportTime),
-                convert(continueList.last.lastReportTime),
-              )} 天",
+              "已经连续打卡: ${continueList.length > 1 ? getDuration(
+                  convert(continueList?.first?.lastReportTime),
+                  convert(continueList?.last?.lastReportTime),
+                ) : 0} 天",
             ),
           )
         ],

@@ -38,20 +38,20 @@ class HealthCodeDetailPage extends StatelessWidget {
           ),
           ListTile(
             title: Text("ID"),
-            subtitle: Text(healthCode.codeId),
+            subtitle: Text("${healthCode.codeId}"),
           ),
           Divider(),
           ListTile(
             title: Text("Reported time"),
             subtitle: Text(
-              convert(healthCode.lastReportTime).toString(),
+              "${convert(healthCode.lastReportTime).toString()}",
             ),
           ),
           Divider(),
           ListTile(
             title: Text("Expire time"),
             subtitle: Text(
-              convert(healthCode.outTime).toString(),
+              "${convert(healthCode.outTime).toString()}",
             ),
           ),
           Spacer(),
@@ -66,11 +66,11 @@ class HealthCodeDetailPage extends StatelessWidget {
                         try {
                           await databaseProvider.add(healthCode);
                           homeProvider.sendNotification(
-                            DateTime.now().add(
-                              Duration(seconds: 10),
+                            convert(healthCode.outTime).subtract(
+                              Duration(hours: 2),
                             ),
-                            title: "Test",
-                            message: "Test Test",
+                            title: "健康码即将过期",
+                            message: "你的健康码将会在2小时后过期，请及时更新！",
                           );
                           Navigator.pop(context);
                         } catch (err) {

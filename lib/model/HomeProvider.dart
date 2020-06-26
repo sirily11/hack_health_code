@@ -6,6 +6,10 @@ class HomeProvider with ChangeNotifier {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  HomeProvider() {
+    init();
+  }
+
   Future<void> init() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =

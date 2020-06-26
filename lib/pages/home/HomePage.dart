@@ -49,15 +49,17 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> scan(ImageSource source) async {
     HealthCodeProvider healthCodeProvider = Provider.of(context, listen: false);
-    // var healthCode = await healthCodeProvider.scan(context, source: source);
+    var healthCode = await healthCodeProvider.scan(context, source: source);
     Navigator.pop(context);
-    await showCupertinoModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context, scrollController) => HealthCodeDetailPage(
-        healthCode: testHealthCode,
-      ),
-    );
+    if (healthCode != null) {
+      await showCupertinoModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context, scrollController) => HealthCodeDetailPage(
+          healthCode: healthCode,
+        ),
+      );
+    }
   }
 
   @override
